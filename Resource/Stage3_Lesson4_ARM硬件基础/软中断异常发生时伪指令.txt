@@ -1,0 +1,10 @@
+R14_svc = address of next instruction after SWI instruction 
+SPSR_und = CPSR
+CPSR[4:0] = 0b10011 /*进入特权模式*/
+CPSR[5] = 0 ;
+
+CPSR[7] = 1 ; 
+if high vectors configured then 
+	PC = 0xffff0008 ;
+Else
+	PC = 0x00000008 ;

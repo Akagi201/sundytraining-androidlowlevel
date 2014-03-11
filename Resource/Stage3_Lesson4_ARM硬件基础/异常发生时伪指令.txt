@@ -1,0 +1,8 @@
+R14_<exception_mode> = return link ;
+SPSR_<exception_mode> = CPSR ;
+CPSR[4:0] = Exception Mode Number ; 
+CPSR[5] = 0  ;
+if <exception_mode> == reset or FIQ then 
+	CPSR[6] = 1 /*屏蔽快速中断FIQ*/
+	CPSR[7] = 1 /*屏蔽外部中断IRQ*/
+	PC= exception vector address 

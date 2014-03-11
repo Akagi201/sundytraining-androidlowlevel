@@ -1,0 +1,27 @@
+字符设备相对简单，是研究内核工作的好框架
+//include/fs.h
+struct file_operations	fops 封装操作集合，用于控制设备
+struct cdev cdev             表征字符设备
+struct file 表征文件对象（这里文件是广义概念，Linux的一切即是文件的思想，字符设备也是文件）、
+struct inode 虚拟文件系统节点
+
+application	|
+应用程序	|	系统调用   虚拟文件系统（inode）		 驱动
+open()----------|-->sys_open() -->(查找inode节点,构造file对象)	     --->回调驱动file_operations登记的open函数
+read()----------|-->sys_read() -->(查找file对象，找到file_operations)--->回调驱动file_operations登记的read函数
+write()---------|-->sys_write()-->(查找file对象，找到file_operations)--->回调驱动file_operations登记的write函数
+close()---------|-->sys_close()-->(查找file对象，找到file_operations)--->回调驱动file_operations登记的release函数
+		|
+1、字符设备注册（从下向上看）
+注册就是在虚拟文件系统中构造一个inode节点，inode有一个域保存了cdev，cdev有一个域保存了file_operations
+inode.i_cdev--->cdev.ops--->file_operations(登记操作函数集合)
+
+2、open过程（从上向下看）
+系统调用open通过设备文件中保存的设备类型及设备号，来查找虚拟文件系统中的inode节点，找就创建一个file对象，
+（每个进程读写同一个设备对象，可能是只读或是只写，或是阻塞，每次打开就构造一个file，就解决了不同方式及状态的保存）
+file对象也会有file_operations指针域，保存了inode中的file_operations域，应用层用文件描述于之关联
+
+3、read/write
+系统调用read/write通过文件描述符找到file对象，就知道对于设备的>file_operations，并回调对应函数（read/write）
+
+说明，open系统调用过程要处理7类文件对象，比较复杂，所以你可以研究read系统调用，file对象以及有了，过程显得比较简单。

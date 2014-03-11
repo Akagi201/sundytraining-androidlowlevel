@@ -1,0 +1,10 @@
+R14_svc = UNPREDICTABLE value
+SPSR_svc = UNPREDICTABLE value
+CPSR[4:0] = ob10011 /*进入特权模式*/
+CPSR[5] = 0 
+CPSR[6] = 1 ;
+CPSR[7] = 1 ; 
+if high vectors configured then 
+	PC = 0xffff0000 ;
+Else
+	PC = 0x00000000 ;

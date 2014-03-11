@@ -1,0 +1,38 @@
+arm-linux-gcc -wall -O2 -c -o $@ $<
+-o 只激活预处理,编译,和汇编,也就是他只把程序做成obj文件 
+-Wall 指定产生全部的警告信息 
+-O2 编译器对程序提供的编译优化选项，在编译的时候使用该选项，可以使生成的执行文件的执行效率提高 
+-c 表示只要求编译器进行编译，而不要进行链接，生成以源文件的文件名命名但把其后缀由 .c 或 .cc 变成 .o 的目标文件 
+-S 只激活预处理和编译，就是指把文件编译成为汇编代码
+ 
+arm-linux-ld 直接指定代码段,数据段,BSS段的起始地址
+  -Tbss ADDRESS               Set address of .bss section
+  -Tdata ADDRESS              Set address of .data section
+  -Ttext ADDRESS              Set address of .text section
+示例:
+ ${CROSS}ld -Ttext=0x33000000 led.o -o led.elf
+ 
+使用连接脚本设置地址:
+   arm-linux-ld -Tbeep.lds start.o beep.o -o beep.elf
+其中beep.lds 为连接脚本如下：
+ 
+arm-linux-objcopy被用来复制一个目标文件的内容到另一个文件中,可用于不同源文件的之间的格式转换
+示例:
+arm-linux-objcopy –o binary –S elf_file bin_file
+常用的选项:
+input-file , outflie
+输入和输出文件,如果没有outfile,则输出文件名为输入文件名
+2.-l bfdname或—input-target=bfdname
+用来指明源文件的格式,bfdname是BFD库中描述的标准格式名,如果没指明,则arm-linux-objcopy自己分析
+3.-O bfdname 输出的格式
+4.-F bfdname 同时指明源文件,目的文件的格式
+5.-R sectionname 从输出文件中删除掉所有名为sectionname的段
+6.-S 不从源文件中复制重定位信息和符号信息到目标文件中
+7.-g 不从源文件中复制调试符号到目标文件中
+ 
+arm-linux-objdump
+查看目标文件（.o文件）和库文件(.a文件）信息
+arm-linux-objdump -D -m arm beep.elf > beep.dis
+-D 显示文件中所有汇编信息
+-m machine
+指定反汇编目标文件时使用的架构，当待反汇编文件本身没有描述架构信息的时候(比如S-records)，这个选项很有用。可以用-i选项列出这里能够指定的架构.
