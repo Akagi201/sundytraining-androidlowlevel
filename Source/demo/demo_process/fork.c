@@ -1,16 +1,17 @@
 #include <unistd.h>
 #include <stdio.h>
 
-int main() 
-{
-	pid_t pid   ; 
-	pid = fork()  ; 
-	if(pid == -1)
-		perror("faulure")  ; 
-	else if(pid ==0)
-		printf("child process:%d\n",getpid())  ; 
-	else
-		printf("parent process:%d\n",getpid())  ; 
+int main() {
+    pid_t pid   ;
+    pid = fork()  ;
 
-	return 0 ; 
+    if (pid == -1) {
+        perror("faulure")  ;
+    } else if (pid == 0) {
+        printf("child process:%d\n", getpid())  ;
+    } else {
+        printf("parent process:%d\n", getpid())  ;
+    }
+
+    return 0 ;
 }

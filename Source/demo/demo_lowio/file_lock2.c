@@ -4,23 +4,34 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <stdlib.h>
+// 建议锁, 别的进程仍然可以写入
+int main() {
+    int fd;
+    fd = open("hello", O_RDWR | O_CREAT, 0666);
 
-int main()
-{
-	int fd ;
-	fd = open("hello",O_RDWR|O_CREAT,0666)  ;
-	if(fd<0)
-		exit(-1)  ;
-	
-	struct flock lock ;
-	lock.l_type = F_WRLCK ;
-	lock.l_start = 0 ; 
-	lock.l_whence = SEEK_SET  ;
-	lock.l_len = 0 ;
-	lock.l_pid = getpid() ;
+    if (fd < 0) {
+        exit(-1);
+    }
 
-	int ret = fcntl(fd,F_SETLKW,&lock)  ;
-	printf("return value of:%d\n",ret)  ;
-	while(1)
-		ret++  ;
+    struct flock lock;
+
+    lock.l_type = F_WRLCK;
+
+    lock.l_start = 0;
+
+    lock.l_whence = SEEK_SET;
+
+    lock.l_len = 0;
+
+    lock.l_pid = getpid();
+
+    int ret = fcntl(fd, F_SETLKW, &lock);
+
+    printf("return value of:%d\n", ret);
+
+    while (1) {
+        ++ret;
+    }
+
+    return 0;
 }
