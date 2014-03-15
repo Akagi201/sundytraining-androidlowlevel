@@ -3,11 +3,11 @@
 #include <sys/sem.h>
 #include <stdio.h>
 
-int main()
-{
-	if(semctl(0,0,IPC_RMID) != -1)
-		printf("ok\n") ; 
+int main() {
+    if (semctl(0, 0, IPC_RMID) != -1) {
+        printf("ok\n") ;
+    }
 
-	return 0 ; 
-	
+    return 0 ;
+
 }
