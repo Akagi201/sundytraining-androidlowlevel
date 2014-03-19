@@ -21,7 +21,7 @@ CFLAGS	+=	-Wall
 CFLAGS	+=	-I./inc
 
 LDFLAGS	+=	-Tmap.lds
-ifeq ($(ENV),RAM)
+ifeq ($(ENV), SD)
 LDFLAGS	+=	-Ttext=0x0
 else
 LDFLAGS	+=	-Ttext=0x20000000
