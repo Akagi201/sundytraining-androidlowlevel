@@ -8,7 +8,7 @@ SDTOOLS	:=	./mk210
 
 COBJS	+= main.o
 COBJS	+= start.o
-COBJS	+= led.o uart.o
+COBJS	+= led.o uart.o key.o
 
 
 CROSS_COMPILE := arm-linux-

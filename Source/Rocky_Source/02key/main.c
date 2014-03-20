@@ -24,10 +24,15 @@ void led_test()
 
 int main()
 {
-	irq_init();
 	uart_init();
-	key_init();
 
+	myputc('1');
+	myputc('2');
+	myputc('3');
+	myputc('4');
+	myputc('5');
+	myputc('6');
+	
 	myputs("hello world!\n");
 	
 	led_test();
